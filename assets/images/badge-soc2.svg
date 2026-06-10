@@ -1,0 +1,8 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" width="120"  height="120" >
+  <circle cx="60" cy="60" r="58" stroke="#9CA3AF" stroke-width="1.5" fill="#F9FAFB"/>
+  <circle cx="60" cy="60" r="52" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="60" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#6B7280" letter-spacing="1.5">AICPA</text>
+  <line x1="30" y1="50" x2="90" y2="50" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="60" y="72" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#6B7280" letter-spacing="1">SOC2</text>
+  <text x="60" y="88" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#9CA3AF">aicpa.org/soc4so</text>
+</svg>

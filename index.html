@@ -1,0 +1,2375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Founderpath — Non-dilutive capital for software companies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Fonts: Inter Display for headings ─────────────────── */
+    @font-face {
+      font-family: 'Inter Display';
+      src: url('assets/fonts/InterDisplay-Light.woff2') format('woff2');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter Display';
+      src: url('assets/fonts/InterDisplay-Regular.woff2') format('woff2');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter Display';
+      src: url('assets/fonts/InterDisplay-Medium.woff2') format('woff2');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter Display';
+      src: url('assets/fonts/InterDisplay-SemiBold.woff2') format('woff2');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img, svg { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+    a { cursor: pointer; }
+
+    /* ─── Tokens ────────────────────────────────────────────── */
+    :root {
+      --ink: #10121f;            /* near-black, blue-tinted */
+      --gray: #545b72;           /* secondary text, cool */
+      --muted: #8b91a6;          /* tertiary text / labels, cool */
+      --line: #e3e5ef;           /* hairline, cool */
+      --line-strong: #10121f;    /* strong rule */
+      --bg: #ffffff;
+      --bg-subtle: #f6f7fb;      /* quiet band, cool */
+      --brand: #443dd8;          /* primary actions + data accents */
+      --brand-dark: #3832b8;
+      --brand-deep: #2a2580;     /* darkest chart tint */
+      --brand-soft: #b9b5f0;     /* mid chart tint */
+      --brand-faint: #e2e0fa;    /* lightest chart tint */
+      --accent: #443dd8;
+      --max-w: 1200px;
+      --page-px: 64px;
+      --h-track: -0.025em;
+    }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: calc(var(--max-w) + var(--page-px) * 2);
+      margin: 0 auto;
+      padding-left: var(--page-px);
+      padding-right: var(--page-px);
+    }
+
+    /* Numbers always tabular — report discipline */
+    .num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+
+    /* ─── Type scale ────────────────────────────────────────── */
+    .display {
+      font-family: 'Inter Display', 'Inter', sans-serif;
+      font-weight: 400;
+      letter-spacing: var(--h-track);
+      line-height: 1.05;
+      color: var(--ink);
+    }
+    h1.display { font-size: 64px; font-weight: 400; }
+    h2.display { font-size: 38px; font-weight: 400; line-height: 1.12; }
+    h3.display { font-size: 22px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.25; }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .lede { font-size: 17px; color: var(--gray); line-height: 1.6; }
+    .body-sm { font-size: 14px; color: var(--gray); line-height: 1.6; }
+    .label-sm { font-size: 12px; color: var(--muted); letter-spacing: 0.02em; }
+
+    /* ─── Buttons: square, restrained ───────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      white-space: nowrap;
+      border-radius: 0;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-solid { background: var(--brand); color: #fff; }
+    .btn-solid:hover { background: var(--brand-dark); }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    .btn-ghost:hover { border-color: var(--ink); }
+    .btn-sm { padding: 8px 18px; font-size: 13px; }
+    .btn .arrow { transition: transform 0.15s ease; }
+    .btn:hover .arrow { transform: translateX(3px); }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+    .text-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      transition: border-color 0.15s ease;
+    }
+    .text-link:hover { border-color: var(--brand); color: var(--brand); }
+
+    /* ─── Section scaffolding ───────────────────────────────── */
+    section { padding: 96px 0; }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line-strong);
+      margin-bottom: 56px;
+    }
+    .section-head .eyebrow { flex-shrink: 0; }
+    .section-head .section-meta { margin-left: auto; }
+
+    /* ─── Reveal (subtle, single effect) ────────────────────── */
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; transition-delay: var(--d, 0s); }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+    /* ─── Top bar ───────────────────────────────────────────── */
+    .topbar { border-bottom: 1px solid var(--line); background: var(--bg-subtle); }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 9px 0;
+      font-size: 12.5px;
+      color: var(--gray);
+    }
+    .topbar a { color: var(--ink); font-weight: 500; border-bottom: 1px solid var(--line); }
+    .topbar a:hover { border-color: var(--ink); }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    header { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); z-index: 50; }
+    .nav { display: flex; align-items: center; gap: 24px; height: 64px; }
+    .nav-logo {
+      font-family: 'Inter Display', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo img { height: 26px; width: auto; display: block; }
+    .badge-img { height: 52px; width: auto; display: block; opacity: 0.85; transition: opacity 0.15s ease; }
+    .badge-img:hover, a:hover .badge-img { opacity: 1; }
+    .sec-badge { height: 50px; width: auto; margin-top: 18px; opacity: 0.85; }
+    .nav-links { display: flex; gap: 28px; justify-content: center; }
+    .nav-link { font-size: 14px; color: var(--gray); transition: color 0.15s ease; }
+    .nav-link:hover { color: var(--ink); }
+    .nav-actions { flex: 1; display: flex; justify-content: flex-end; gap: 8px; align-items: center; }
+    .nav-login { font-size: 14px; color: var(--gray); margin-right: 12px; }
+    .nav-login:hover { color: var(--ink); }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    .hero { padding: 96px 0 128px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      gap: 72px;
+      align-items: start;
+    }
+    .hero-press {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 32px;
+    }
+    .hero-press .tc { font-weight: 600; color: var(--ink); letter-spacing: 0.02em; }
+    .hero-press .sep { width: 1px; height: 12px; background: var(--line); }
+    .hero h1 { margin-bottom: 24px; }
+    .hero .lede { max-width: 460px; margin-bottom: 40px; }
+    .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+    .hero-figures {
+      display: flex;
+      gap: 0;
+      margin-top: 72px;
+      border-top: 1px solid var(--line);
+    }
+    .hero-figure { padding: 20px 40px 0 0; }
+    .hero-figure + .hero-figure { padding-left: 40px; border-left: 1px solid var(--line); }
+    .hero-figure .val { font-family: 'Inter Display', sans-serif; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
+    .hero-figure .lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+    /* ─── Brand canvas: animated gradient blobs + film grain ── */
+    .brand-canvas {
+      position: relative;
+      overflow: hidden;
+      --bc-base: #0a0c1c;
+      --bc1: rgba(68, 61, 216, 0.85);
+      --bc2: rgba(112, 156, 255, 0.50);
+      --bc3: rgba(154, 196, 255, 0.28);
+      --bc4: rgba(10, 8, 38, 0.95);
+      background: var(--bc-base);
+    }
+    .brand-canvas.bc-teal {
+      --bc-base: #06141a;
+      --bc1: rgba(13, 148, 136, 0.80);
+      --bc2: rgba(45, 212, 191, 0.45);
+      --bc3: rgba(167, 243, 228, 0.22);
+      --bc4: rgba(3, 26, 30, 0.95);
+    }
+    .brand-canvas.bc-yellow {
+      --bc-base: #161103;
+      --bc1: rgba(202, 138, 4, 0.80);
+      --bc2: rgba(250, 204, 21, 0.42);
+      --bc3: rgba(254, 240, 138, 0.22);
+      --bc4: rgba(36, 25, 3, 0.95);
+    }
+    .brand-canvas::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 200%;
+      aspect-ratio: 1 / 1;
+      margin: 0;
+      z-index: 0;
+      background:
+        radial-gradient(28% 28% at 32% 34%, var(--bc1), transparent 70%),
+        radial-gradient(24% 24% at 72% 48%, var(--bc2), transparent 70%),
+        radial-gradient(20% 20% at 56% 20%, var(--bc3), transparent 70%),
+        radial-gradient(36% 36% at 50% 82%, var(--bc4), transparent 72%);
+      filter: blur(44px);
+      animation:
+        bcSpin 13s linear infinite,
+        bcHue 7.5s ease-in-out infinite alternate;
+      will-change: transform, filter;
+    }
+    .brand-canvas.bc-teal::before { animation-duration: 17s, 9s; animation-direction: reverse, alternate; }
+    .brand-canvas.bc-yellow::before { animation-duration: 20s, 10.5s; }
+    .brand-canvas::after {
+      content: '';
+      position: absolute;
+      inset: -12%;
+      z-index: 0;
+      background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.16;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      animation: bcGrain 0.9s steps(2) infinite;
+    }
+    .brand-canvas > * { position: relative; z-index: 1; }
+    @keyframes bcSpin {
+      0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+      50%  { transform: translate(-50%, -50%) rotate(180deg) scale(1.32); }
+      100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+    }
+    @keyframes bcHue {
+      0%   { filter: blur(44px) hue-rotate(-24deg) saturate(1); }
+      100% { filter: blur(44px) hue-rotate(36deg) saturate(1.45); }
+    }
+    @keyframes bcGrain {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(-2%, 1%); }
+      50%  { transform: translate(1%, -2%); }
+      75%  { transform: translate(-1%, 2%); }
+      100% { transform: translate(2%, 1%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .brand-canvas::before, .brand-canvas::after { animation: none; }
+    }
+    .hero-canvas { padding: 28px; }
+
+
+    .ledger { border: 1px solid var(--line-strong); background: var(--bg); }
+    .ledger-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .ledger-title { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+    .ledger-status { display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--gray); }
+    .ledger-dot { width: 6px; height: 6px; background: var(--accent); animation: ledgerPulse 2.4s ease-in-out infinite; }
+    @keyframes ledgerPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .ledger table { width: 100%; border-collapse: collapse; }
+    .ledger th {
+      text-align: left;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .ledger td {
+      padding: 13px 20px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+    .ledger tr:last-child td { border-bottom: none; }
+    .ledger tbody tr { cursor: pointer; transition: background 0.15s ease; }
+    .ledger tbody tr:hover { background: var(--bg-subtle); }
+    .ledger td.company { font-weight: 500; }
+    .ledger .co-cell { display: flex; align-items: center; gap: 12px; }
+    .ledger-thumb {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      background: var(--brand-faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+    .ledger-thumb svg { width: 9px; height: 9px; fill: var(--brand); transition: fill 0.15s ease; }
+    .ledger tbody tr:hover .ledger-thumb { background: var(--brand); }
+    .ledger tbody tr:hover .ledger-thumb svg { fill: #fff; }
+
+    /* Video modal */
+    .video-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(16,18,31,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 24px;
+    }
+    .video-overlay.open { display: flex; }
+    .video-frame { width: min(960px, 100%); aspect-ratio: 16/9; background: #000; position: relative; }
+    .video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .video-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: #fff;
+      font-size: 26px;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+    .ledger td.product { color: var(--gray); font-size: 12.5px; }
+    .ledger td.amount { text-align: right; font-weight: 500; }
+    .ledger td.when { text-align: right; color: var(--muted); font-size: 12px; }
+    .ledger-foot {
+      padding: 13px 20px;
+      border-top: 1px solid var(--line-strong);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      color: var(--gray);
+      background: var(--bg-subtle);
+    }
+    .ledger-foot strong { color: var(--ink); font-weight: 600; }
+
+
+    /* ─── Entrance choreography (CSS-only, zero state) ──────── */
+    .hl { display: block; overflow: hidden; }
+    .hl span { display: block; animation: lineUp 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+    .hl:nth-of-type(2) span { animation-delay: 0.14s; }
+    @keyframes lineUp { from { transform: translateY(110%); } }
+    .ledger tbody tr { animation: rowIn 0.5s ease backwards; }
+    .ledger tbody tr:nth-child(1) { animation-delay: 0.55s; }
+    .ledger tbody tr:nth-child(2) { animation-delay: 0.70s; }
+    .ledger tbody tr:nth-child(3) { animation-delay: 0.85s; }
+    .ledger tbody tr:nth-child(4) { animation-delay: 1.00s; }
+    .ledger tbody tr:nth-child(5) { animation-delay: 1.15s; }
+    @keyframes rowIn { from { opacity: 0; transform: translateY(9px); } }
+    .ledger-foot { animation: rowIn 0.5s ease 1.35s backwards; }
+
+
+    .security { background: var(--bg-subtle); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .sec-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .sec-cell { padding: 0 32px 0 0; }
+    .sec-cell + .sec-cell { padding-left: 32px; border-left: 1px solid var(--line); }
+    .sec-cell h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .sec-cell .body-sm { margin-bottom: 14px; }
+
+    /* ─── RF widget phases (looping state machine) ──────────── */
+    .rf-stage { position: relative; height: 248px; }
+    .rf-phase {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+    .rf-phase.active { opacity: 1; transform: none; }
+    .rf-status { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .rf-status::after { content: '...'; display: inline-block; overflow: hidden; vertical-align: bottom; width: 0; animation: rfDots 1.2s steps(4, end) infinite; }
+    @keyframes rfDots { to { width: 15px; } }
+    .rf-check {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13.5px;
+      opacity: 0.25;
+      transition: opacity 0.35s ease;
+    }
+    .rf-check.on { opacity: 1; }
+    .rf-tick {
+      width: 17px;
+      height: 17px;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .rf-tick svg { width: 9px; height: 9px; stroke: #fff; stroke-width: 2.5; fill: none; opacity: 0; transition: opacity 0.2s ease; }
+    .rf-check.on .rf-tick { background: var(--pva); border-color: var(--pva); }
+    .rf-check.on .rf-tick svg { opacity: 1; }
+    .rf-p2.active .cap-fill { width: 50%; transition-delay: 0.25s; }
+    .rf-p3 { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; }
+    .rf-wired-tick { width: 44px; height: 44px; background: var(--pva); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .rf-wired-tick svg { width: 18px; height: 18px; stroke: #fff; stroke-width: 2.5; fill: none; }
+    .rf-p3 .t { font-family: 'Inter Display', sans-serif; font-size: 22px; font-weight: 500; letter-spacing: -0.015em; }
+    .rf-p3 .s { font-size: 13.5px; color: var(--gray); }
+    .rf-p3 .amt { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); width: 100%; display: flex; justify-content: space-between; font-size: 13.5px; }
+    .rf-p3 .amt strong { font-weight: 600; }
+
+
+    .ticker {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      padding: 11px 0;
+      background: var(--bg);
+    }
+    .ticker-track {
+      display: inline-flex;
+      gap: 56px;
+      width: max-content;
+      animation: tickerMove 46s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker:hover .ticker-track { animation-play-state: paused; }
+    .ticker-item {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ticker-item strong { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
+    .ticker-item::before { content: ''; width: 5px; height: 5px; background: var(--brand); flex-shrink: 0; }
+    @keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ─── Film ──────────────────────────────────────────────── */
+    .film { padding: 96px 0; }
+    .film-head { max-width: 640px; margin-bottom: 48px; }
+    .film-head .eyebrow { margin-bottom: 24px; }
+    .film-head h2 { margin-bottom: 16px; }
+    .film-head .lede { max-width: 520px; }
+    .film-stage { padding: 28px; }
+    .film-frame { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+    .film-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .film-cover {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background: linear-gradient(rgba(16,18,31,0.15), rgba(16,18,31,0.55));
+      transition: background 0.2s ease;
+    }
+    .film-cover:hover { background: linear-gradient(rgba(16,18,31,0.05), rgba(16,18,31,0.45)); }
+    .film-play {
+      width: 68px;
+      height: 68px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+    .film-play svg { width: 18px; height: 18px; fill: var(--ink); transition: fill 0.2s ease; margin-left: 3px; }
+    .film-cover:hover .film-play { background: var(--brand); }
+    .film-cover:hover .film-play svg { fill: #fff; }
+    .film-cap {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .film-cover.hidden { display: none; }
+
+
+    .logos { padding: 0 0 96px; }
+    .logos-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .logos-head p { font-size: 14px; color: var(--gray); }
+    .logos-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .logo-cell {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 34px 16px;
+      min-height: 96px;
+    }
+    .logo-mark {
+      color: #b2b7cb;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+      user-select: none;
+    }
+    .logo-cell:hover .logo-mark { color: var(--gray); }
+    .logo-img {
+      max-height: 28px;
+      max-width: 70%;
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(1);
+      opacity: 0.55;
+      transition: filter 0.2s ease, opacity 0.2s ease;
+    }
+    .logo-cell:hover .logo-img { filter: grayscale(0); opacity: 1; }
+    .lm-1 { font-family: 'Inter Display', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
+    .lm-2 { font-family: Georgia, 'Times New Roman', serif; font-size: 18px; letter-spacing: 0.01em; }
+    .lm-3 { font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; }
+    .lm-4 { font-family: 'Inter Display', sans-serif; font-weight: 300; font-size: 19px; letter-spacing: -0.01em; }
+    .lm-5 { font-size: 15px; font-weight: 600; font-style: italic; }
+    .lm-6 { font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: lowercase; }
+
+    /* ─── Product visuals (branded, square) ─────────────────── */
+    .pv {
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+      padding: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      --pva: var(--brand);
+      --pva-deep: var(--brand-deep);
+      --pva-soft: var(--brand-soft);
+      --pva-faint: var(--brand-faint);
+    }
+    .pv.brand-canvas { background: var(--bc-base); border: none; }
+    .pv.bc-teal { --pva: #0d9488; --pva-deep: #115e59; --pva-soft: #5eead4; --pva-faint: #ccfbf1; }
+    .pv.bc-yellow { --pva: #d4a015; --pva-deep: #a16207; --pva-soft: #fde047; --pva-faint: #fef3c7; }
+    .pv-card {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      width: 100%;
+      max-width: 420px;
+    }
+    .pv-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .pv-card-title { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .pv-chip { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pva); display: flex; align-items: center; gap: 6px; }
+    .pv-chip::before { content: ''; width: 5px; height: 5px; background: var(--pva); animation: ledgerPulse 2.4s ease-in-out infinite; }
+    .pv-card-body { padding: 22px 20px; }
+
+    /* Capital offer */
+    .cap-amount { font-family: 'Inter Display', sans-serif; font-size: 34px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 18px; }
+    .cap-bar { height: 8px; background: var(--pva-faint); position: relative; margin-bottom: 8px; }
+    .cap-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--pva); transition: width 1.1s cubic-bezier(0.25, 0.8, 0.3, 1); }
+    .cap-range { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); margin-bottom: 20px; }
+    .cap-rows { border-top: 1px solid var(--line); }
+    .cap-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .cap-row:last-child { border-bottom: none; }
+    .cap-dot { width: 8px; height: 8px; flex-shrink: 0; }
+    .cap-row .lbl { color: var(--gray); }
+    .cap-row .val { margin-left: auto; font-weight: 500; }
+    .cap-row.strong .lbl, .cap-row.strong .val { font-weight: 600; color: var(--ink); }
+
+    /* Term loan timeline */
+    .tl-rows { }
+    .tl-row { display: grid; grid-template-columns: 130px 1fr 52px; gap: 14px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+    .tl-row:last-child { border-bottom: none; }
+    .tl-name { font-size: 12.5px; font-weight: 500; line-height: 1.3; }
+    .tl-track { position: relative; height: 10px; background: var(--bg-subtle); }
+    .tl-bar { position: absolute; top: 0; bottom: 0; background: var(--pva); transform-origin: left; animation: tlLoop 7.5s cubic-bezier(0.25, 0.8, 0.3, 1) infinite; }
+    .tl-bar.soft { background: var(--pva-soft); }
+    .tl-row:nth-child(1) .tl-bar { animation-delay: 0s; }
+    .tl-row:nth-child(2) .tl-bar { animation-delay: 0.35s; }
+    .tl-row:nth-child(3) .tl-bar { animation-delay: 0.7s; }
+    .tl-row:nth-child(4) .tl-bar { animation-delay: 1.05s; }
+    .tl-row:nth-child(5) .tl-bar { animation-delay: 1.4s; }
+    @keyframes tlLoop {
+      0%        { transform: scaleX(0); opacity: 1; }
+      14%       { transform: scaleX(1); opacity: 1; }
+      78%       { transform: scaleX(1); opacity: 1; }
+      86%, 100% { transform: scaleX(1); opacity: 0; }
+    }
+    .tl-dur { font-size: 11px; color: var(--muted); text-align: right; white-space: nowrap; }
+
+    /* MCA chart */
+    .mca-legend { display: flex; gap: 18px; margin-bottom: 18px; }
+    .mca-legend span { display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--gray); }
+    .mca-legend i { width: 8px; height: 8px; flex-shrink: 0; }
+    .mca-chart { display: flex; align-items: flex-end; gap: 18px; height: 150px; border-bottom: 1px solid var(--line-strong); padding: 0 6px; }
+    .mca-group { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; transform-origin: bottom; animation: mcaLoop 6.5s cubic-bezier(0.25, 0.8, 0.3, 1) infinite; }
+    .mca-group:nth-child(1) { animation-delay: 0s; }
+    .mca-group:nth-child(2) { animation-delay: 0.18s; }
+    .mca-group:nth-child(3) { animation-delay: 0.36s; }
+    .mca-group:nth-child(4) { animation-delay: 0.54s; }
+    .mca-group:nth-child(5) { animation-delay: 0.72s; }
+    @keyframes mcaLoop {
+      0%        { transform: scaleY(0); opacity: 1; }
+      16%       { transform: scaleY(1); opacity: 1; }
+      80%       { transform: scaleY(1); opacity: 1; }
+      88%, 100% { transform: scaleY(1); opacity: 0; }
+    }
+    .mca-seg { width: 100%; }
+    .mca-labels { display: flex; gap: 18px; padding: 8px 6px 0; }
+    .mca-labels span { flex: 1; text-align: center; font-size: 10.5px; color: var(--muted); }
+
+
+    .products { border-top: 1px solid var(--line); }
+    .product-row {
+      display: grid;
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      gap: 80px;
+      padding: 96px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-head + .product-row { padding-top: 0; }
+    .product-row:last-child { border-bottom: none; }
+    .product-idx { font-size: 12px; color: var(--muted); margin-bottom: 16px; font-variant-numeric: tabular-nums; }
+    .product-row h3 { margin-bottom: 14px; }
+    .product-row .body-sm { max-width: 420px; margin-bottom: 28px; }
+    .product-row .terms { margin-bottom: 28px; }
+    .terms { border-top: 1px solid var(--line); }
+    .terms-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 20px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .terms-row dt { color: var(--muted); font-size: 12.5px; padding-top: 1px; }
+    .terms-row dd { font-weight: 500; }
+    .terms-row dd span.note { font-weight: 400; color: var(--gray); }
+
+    /* ─── Process: the 24-hour wire (instrument panel) ──────── */
+    .process { background: var(--bg-subtle); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .tlx-panel { background: var(--bg); border: 1px solid var(--line); }
+    .tlx-body { padding: 40px 32px 36px; }
+    .tlx-axis { position: relative; height: 96px; }
+    .tlx-grp {
+      position: absolute;
+      top: 0;
+      border-top: 1px solid var(--line-strong);
+      padding-top: 8px;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    .tlx-grp.g1 { left: 0; width: 12.6%; }
+    .tlx-grp.g2 { left: 14.4%; right: 0; color: var(--brand); }
+    .tlx-track { position: absolute; left: 0; right: 0; top: 62px; height: 1px; background: var(--line-strong); }
+    .tlx-tick { position: absolute; top: 58px; width: 1px; height: 9px; background: var(--line-strong); }
+    .tlx-hour { position: absolute; top: 76px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; transform: translateX(-50%); white-space: nowrap; }
+    .tlx-seg {
+      position: absolute;
+      top: 52px;
+      height: 21px;
+      transform-origin: left;
+      animation: tlxDraw 8s cubic-bezier(0.3, 0.8, 0.3, 1) infinite;
+    }
+    .tlx-seg.s1 { left: 0; width: 4%; background: var(--brand); }
+    .tlx-seg.s2 { left: 4.6%; width: 8%; background: var(--brand-soft); animation-name: tlxDraw2; }
+    .tlx-span {
+      position: absolute;
+      left: 14.4%;
+      right: 52px;
+      top: 52px;
+      height: 21px;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 5px, var(--line) 5px, var(--line) 6px);
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+    .tlx-wire {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 29px;
+      height: 29px;
+      background: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: tlxWire 8s ease infinite;
+    }
+    .tlx-wire svg { width: 13px; height: 13px; stroke: #fff; stroke-width: 2.5; fill: none; }
+    .tlx-playhead {
+      position: absolute;
+      top: 42px;
+      bottom: 14px;
+      width: 1px;
+      background: var(--brand);
+      opacity: 0;
+      animation: tlxSweep 8s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes tlxSweep {
+      0%       { left: 0%; opacity: 1; }
+      88%      { left: 100%; opacity: 1; }
+      92%,100% { left: 100%; opacity: 0; }
+    }
+    @keyframes tlxDraw {
+      0%        { transform: scaleX(0); }
+      5%        { transform: scaleX(1); }
+      97%       { transform: scaleX(1); }
+      100%      { transform: scaleX(0); }
+    }
+    @keyframes tlxDraw2 {
+      0%, 4%    { transform: scaleX(0); }
+      12%       { transform: scaleX(1); }
+      97%       { transform: scaleX(1); }
+      100%      { transform: scaleX(0); }
+    }
+    @keyframes tlxWire {
+      0%, 84%   { transform: scale(1); }
+      89%       { transform: scale(1.35); }
+      94%, 100% { transform: scale(1); }
+    }
+    .tlx-captions { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+    .tlx-cap { padding: 26px 28px 30px; }
+    .tlx-cap + .tlx-cap { border-left: 1px solid var(--line); }
+    .tlx-key {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .tlx-key i { width: 9px; height: 9px; flex-shrink: 0; }
+    .tlx-cap h3 { font-size: 18px; margin-bottom: 10px; }
+    .tlx-cap .body-sm { max-width: 320px; }
+    .process-integrations {
+      margin-top: 64px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 28px;
+      align-items: baseline;
+    }
+    .process-integrations .label-sm { margin-right: 8px; }
+    .int-name { font-size: 13px; font-weight: 500; color: var(--gray); }
+
+    /* ─── Stats band ────────────────────────────────────────── */
+    .stats .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 48px;
+    }
+    .stat-big { font-family: 'Inter Display', sans-serif; font-size: 48px; font-weight: 300; letter-spacing: -0.03em; line-height: 1; }
+    .stat-lbl { font-size: 13px; color: var(--gray); margin-top: 12px; max-width: 210px; line-height: 1.5; }
+
+    /* ─── Portfolio voices (carousel) ───────────────────────── */
+    .voices-viewport { overflow: hidden; border: 1px solid var(--line); }
+    .voices-track { display: flex; transition: transform 0.35s ease; }
+    .voice-card {
+      flex: 0 0 calc(100% / 3);
+      border-right: 1px solid var(--line);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-height: 320px;
+      background: var(--bg);
+    }
+    .voice-card:last-child { border-right: none; }
+    .voice-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .voice-co { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+    .voice-stars { height: 14px; width: auto; display: block; flex-shrink: 0; }
+    .voice-stars rect { fill: #00b67a; }
+    .voice-stars path { fill: #fff; }
+    .voice-quote { font-family: 'Inter Display', sans-serif; font-size: 17px; font-weight: 400; line-height: 1.5; letter-spacing: -0.01em; flex: 1; }
+    .voice-meta { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; font-size: 13px; }
+    .voice-person .name { font-weight: 500; }
+    .voice-person .role { color: var(--muted); }
+    .voice-amt { text-align: right; white-space: nowrap; }
+    .voice-amt strong { font-weight: 600; }
+    .voice-amt span { color: var(--muted); }
+    .voices-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 24px; flex-wrap: wrap; }
+    .voices-foot .rating { font-size: 13px; color: var(--gray); display: flex; gap: 10px; align-items: center; }
+    .voices-foot .rating strong { color: var(--ink); font-weight: 600; }
+    .carousel-arrows { display: flex; gap: 8px; }
+    .carousel-arrow {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .carousel-arrow:hover { border-color: var(--ink); }
+    .carousel-arrow[disabled] { opacity: 0.35; pointer-events: none; }
+    .carousel-arrow svg { width: 14px; height: 14px; stroke: var(--ink); }
+
+    /* ─── Eligibility (quiz) ────────────────────────────────── */
+    .eligibility { background: var(--ink); color: #fff; }
+    .eligibility .section-head { border-bottom-color: rgba(255,255,255,0.9); }
+    .eligibility .eyebrow { color: rgba(255,255,255,0.5); }
+    .elig-grid { display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 80px; align-items: start; }
+    .elig-grid h2 { color: #fff; margin-bottom: 16px; }
+    .elig-grid .lede { color: rgba(255,255,255,0.65); max-width: 380px; }
+    .quiz { border: 1px solid rgba(255,255,255,0.25); }
+    .quiz-progress { display: flex; border-bottom: 1px solid rgba(255,255,255,0.25); }
+    .quiz-seg { flex: 1; padding: 10px 16px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); border-right: 1px solid rgba(255,255,255,0.25); font-variant-numeric: tabular-nums; }
+    .quiz-seg:last-child { border-right: none; }
+    .quiz-seg.active { color: #fff; background: var(--brand); }
+    .quiz-body { padding: 32px; }
+    .quiz-q { font-family: 'Inter Display', sans-serif; font-size: 21px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 24px; }
+    .quiz-options { display: flex; flex-direction: column; }
+    .quiz-option {
+      text-align: left;
+      padding: 13px 16px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-bottom: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .quiz-option:last-child { border-bottom: 1px solid rgba(255,255,255,0.2); }
+    .quiz-option:hover { background: var(--brand); color: #fff; }
+    .quiz-option.selected { background: var(--brand); color: #fff; }
+    .quiz-result-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
+    .quiz-result-product { font-family: 'Inter Display', sans-serif; font-size: 28px; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .quiz-result-desc { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 28px; max-width: 420px; }
+    .quiz-result-actions { display: flex; gap: 10px; }
+    .btn-inverse { background: var(--brand); color: #fff; }
+    .btn-inverse:hover { background: var(--brand-dark); }
+    .btn-ghost-inverse { border: 1px solid rgba(255,255,255,0.35); color: #fff; }
+    .btn-ghost-inverse:hover { border-color: #fff; }
+
+    /* ─── Reviews ───────────────────────────────────────────── */
+    .reviews-list { }
+    .review-row {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 4fr) minmax(0, 7fr) 80px;
+      gap: 32px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .review-date { font-size: 12.5px; color: var(--muted); }
+    .review-title { font-size: 15px; font-weight: 500; line-height: 1.4; }
+    .review-author { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+    .review-body { font-size: 14px; color: var(--gray); }
+    .review-verify { font-size: 12.5px; color: var(--muted); text-align: right; }
+    .review-verify:hover { color: var(--ink); }
+
+    /* ─── Network (community) ───────────────────────────────── */
+    .network { background: var(--bg-subtle); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .network-grid { display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 80px; }
+    .network-grid h2 { margin-bottom: 16px; }
+    .network-grid .lede { max-width: 400px; margin-bottom: 32px; }
+    .network-items { border-top: 1px solid var(--line-strong); }
+    .network-item { padding: 22px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline; }
+    .network-item h3 { font-size: 16px; margin-bottom: 6px; }
+    .network-item .body-sm { max-width: 480px; }
+    .network-item .text-link { white-space: nowrap; }
+    .network-photos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-top: 64px;
+    }
+    .network-photo { position: relative; overflow: hidden; background: var(--bg); }
+    .network-photo img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(1);
+      opacity: 0.92;
+      transition: filter 0.45s ease, opacity 0.45s ease;
+    }
+    .network-photo:hover img { filter: grayscale(0); opacity: 1; }
+    .network-photo figcaption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 14px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(transparent, rgba(16,18,31,0.55));
+    }
+
+    /* ─── FAQ ───────────────────────────────────────────────── */
+    .faq-grid { display: grid; grid-template-columns: minmax(0,4fr) minmax(0,8fr); gap: 80px; align-items: start; }
+    .faq-grid h2 { position: sticky; top: 104px; }
+    .faq-list { border-top: 1px solid var(--line-strong); }
+    .faq-row { border-bottom: 1px solid var(--line); }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 20px 0;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .faq-icon { font-family: 'Inter Display', sans-serif; font-size: 18px; font-weight: 300; color: var(--muted); flex-shrink: 0; width: 16px; text-align: center; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+    .faq-a-inner { padding: 0 40px 22px 0; font-size: 14px; color: var(--gray); max-width: 640px; }
+    .faq-row.open .faq-a { max-height: 300px; }
+    .faq-row.open .faq-icon::before { content: '−'; }
+    .faq-row:not(.open) .faq-icon::before { content: '+'; }
+
+    /* ─── Final CTA — brand finale ──────────────────────────── */
+    .final { padding: 150px 0; }
+    .final-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .final .eyebrow { color: rgba(255,255,255,0.55); margin-bottom: 28px; }
+    .final h2.display {
+      font-size: 60px;
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      color: #fff;
+      max-width: 800px;
+    }
+    .final .lede {
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+      margin-top: 24px;
+    }
+    .final-actions { display: flex; gap: 12px; margin-top: 44px; flex-wrap: wrap; justify-content: center; }
+    .final-figures {
+      margin-top: 72px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .final-figures strong { color: #fff; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .final-figures .dot { width: 4px; height: 4px; background: rgba(255,255,255,0.35); }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer { border-top: 1px solid var(--line-strong); padding: 64px 0 40px; }
+    .footer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+    .footer-brand .nav-logo { margin-bottom: 14px; }
+    .footer-brand p { font-size: 13px; color: var(--muted); max-width: 300px; }
+    .footer-cta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 40px 32px;
+      padding-bottom: 56px;
+    }
+    .footer-col-title { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .footer-group + .footer-group { margin-top: 36px; }
+    .footer-link { display: block; font-size: 13.5px; color: var(--gray); padding: 4px 0; }
+    .footer-link:hover { color: var(--ink); }
+    .footer-link .new {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      border: 1px solid var(--brand);
+      padding: 1px 5px;
+      margin-left: 7px;
+      vertical-align: 1px;
+    }
+    .footer-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px 32px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .footer-bottom a:hover { color: var(--ink); }
+    .footer-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .footer-badges { display: flex; gap: 8px; }
+    .footer-badge {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray);
+      border: 1px solid var(--line);
+      padding: 6px 11px;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .footer-badge:hover { border-color: var(--ink); color: var(--ink); }
+    .footer-ai { display: flex; gap: 6px; align-items: baseline; }
+    .footer-ai a { border-bottom: 1px solid var(--line); padding-bottom: 1px; }
+    .footer-ai a:hover { border-color: var(--ink); }
+    .footer-ai .sep { color: var(--line); border: none; }
+
+    /* ─── Responsive ────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      :root { --page-px: 40px; }
+      h1.display { font-size: 52px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+      .logos-grid { grid-template-columns: repeat(3, 1fr); }
+      .product-row, .elig-grid, .network-grid, .faq-grid { grid-template-columns: 1fr; gap: 40px; }
+      .faq-grid h2 { position: static; }
+      .stats .stats-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .sec-grid { grid-template-columns: 1fr 1fr; row-gap: 40px; }
+      .sec-cell:nth-child(3) { border-left: none; padding-left: 0; }
+      .voice-card { flex: 0 0 100%; border-right: none; min-height: 0; }
+      .nav-links { display: none; }
+      .footer-links { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 640px) {
+      :root { --page-px: 20px; }
+      section { padding: 64px 0; }
+      h1.display { font-size: 38px; }
+      h2.display { font-size: 28px; }
+      .final h2.display { font-size: 34px; }
+      .final { padding: 96px 0; }
+      .final-figures { margin-top: 48px; }
+      .hero { padding-top: 56px; padding-bottom: 80px; }
+      .film { padding: 64px 0; }
+      .film-stage { padding: 14px; }
+      .ticker-track { animation-duration: 30s; }
+      .product-row { padding: 64px 0; gap: 40px; }
+      .logos { padding-bottom: 64px; }
+      .logos-grid { grid-template-columns: repeat(2, 1fr); }
+      .logo-cell { padding: 24px 12px; min-height: 76px; }
+      .logos-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .pv { padding: 24px; }
+      .tl-row { grid-template-columns: 96px 1fr 46px; gap: 10px; }
+      .hero-figures { flex-direction: column; }
+      .hero-figure { padding: 16px 0 0; }
+      .hero-figure + .hero-figure { padding-left: 0; border-left: none; }
+      .tlx-captions { grid-template-columns: 1fr; }
+      .tlx-cap { padding: 22px 20px 26px; }
+      .tlx-cap + .tlx-cap { border-left: none; border-top: 1px solid var(--line); }
+      .tlx-body { padding: 28px 18px 24px; }
+      .tlx-grp { font-size: 9px; letter-spacing: 0.08em; }
+      .tlx-grp.g1 { width: 12%; overflow: hidden; }
+      .tlx-hour:nth-of-type(even) { display: none; }
+      .stats .stats-grid { grid-template-columns: 1fr 1fr; gap: 36px 24px; }
+      .stat-big { font-size: 38px; }
+      .review-row { grid-template-columns: 1fr; gap: 8px; }
+      .review-verify { text-align: left; }
+      .ledger th:nth-child(2), .ledger td.product { display: none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-links { grid-template-columns: repeat(2, 1fr); gap: 36px 24px; }
+      .footer-head { flex-direction: column; }
+      .terms-row { grid-template-columns: 1fr; gap: 4px; }
+      .network-item { grid-template-columns: 1fr; gap: 10px; }
+      .network-photos { grid-template-columns: 1fr; margin-top: 48px; }
+      .sec-grid { grid-template-columns: 1fr; gap: 32px; }
+      .sec-cell { padding-right: 0; }
+      .sec-cell + .sec-cell { padding-left: 0; border-left: none; }
+      .rf-stage { height: 240px; }
+      .topbar-inner { flex-wrap: wrap; text-align: center; gap: 6px; }
+      .nav-login { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ─── Top bar: quiet, no countdown, no scarcity ───────── -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="topbar-inner">
+        <span>AI Growth Summit — June 30, New York.</span>
+        <a href="#">Request an invitation</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Navigation ──────────────────────────────────────── -->
+  <header>
+    <div class="wrap">
+      <nav class="nav">
+        <a href="#" class="nav-logo"><img src="assets/images/founderpath-logo.svg" alt="Founderpath" /></a>
+        <div class="nav-links">
+          <a href="#" class="nav-link">Products</a>
+          <a href="#" class="nav-link">Industries</a>
+          <a href="#" class="nav-link">Resources</a>
+          <a href="#" class="nav-link">Partners</a>
+          <a href="#" class="nav-link">About</a>
+        </div>
+        <div class="nav-actions">
+          <a href="#" class="nav-login">Log in</a>
+          <a href="#" class="btn btn-solid btn-sm">Request capital</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ─── Hero ────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+
+        <div>
+          <a href="#" class="hero-press reveal">
+            <span class="tc">TechCrunch</span>
+            <span class="sep"></span>
+            <span>Founderpath raises $145M SaaS fund &rarr;</span>
+          </a>
+          <h1 class="display"><span class="hl"><span>Capital without</span></span><span class="hl"><span>giving up equity.</span></span></h1>
+          <p class="lede reveal" style="--d:0.1s">Founderpath provides non-dilutive capital to software founders. Connect your data, review your terms, and receive funds within 24 hours.</p>
+          <div class="hero-actions reveal" style="--d:0.15s">
+            <a href="#" class="btn btn-solid">Request capital <span class="arrow">&rarr;</span></a>
+            <a href="#" class="btn btn-ghost">Talk to our investment team</a>
+          </div>
+
+          <div class="hero-figures reveal" style="--d:0.2s">
+            <div class="hero-figure">
+              <p class="val num" data-count="271" data-prefix="$" data-suffix="M">$271M</p>
+              <p class="lbl">Deployed to founders</p>
+            </div>
+            <div class="hero-figure">
+              <p class="val num" data-count="731">731</p>
+              <p class="lbl">Companies funded</p>
+            </div>
+            <div class="hero-figure">
+              <p class="val num" data-count="4.9" data-decimals="1" data-suffix=" / 5">4.9 / 5</p>
+              <p class="lbl">Trustpilot, 100+ reviews</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Signature: deployment ledger on brand canvas -->
+        <div class="brand-canvas hero-canvas reveal" style="--d:0.2s">
+          <div class="ledger">
+          <div class="ledger-head">
+            <span class="ledger-title">Recent deployments</span>
+            <span class="ledger-status"><span class="ledger-dot"></span>Updated daily</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Structure</th>
+                <th style="text-align:right">Amount</th>
+                <th style="text-align:right">Closed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-video="LnBA_jV3CBU">
+                <td class="company"><span class="co-cell"><span class="ledger-thumb"><svg viewBox="0 0 10 12"><path d="M0 0v12l10-6z"/></svg></span>Badger Maps</span></td>
+                <td class="product">Term loan</td>
+                <td class="amount num">$4,200,000</td>
+                <td class="when num">Jun 2026</td>
+              </tr>
+              <tr data-video="LnBA_jV3CBU">
+                <td class="company"><span class="co-cell"><span class="ledger-thumb"><svg viewBox="0 0 10 12"><path d="M0 0v12l10-6z"/></svg></span>CyberSmart</span></td>
+                <td class="product">Revenue financing</td>
+                <td class="amount num">$1,452,000</td>
+                <td class="when num">May 2026</td>
+              </tr>
+              <tr data-video="LnBA_jV3CBU">
+                <td class="company"><span class="co-cell"><span class="ledger-thumb"><svg viewBox="0 0 10 12"><path d="M0 0v12l10-6z"/></svg></span>ContactMonkey</span></td>
+                <td class="product">Revenue financing</td>
+                <td class="amount num">$1,000,000</td>
+                <td class="when num">May 2026</td>
+              </tr>
+              <tr data-video="LnBA_jV3CBU">
+                <td class="company"><span class="co-cell"><span class="ledger-thumb"><svg viewBox="0 0 10 12"><path d="M0 0v12l10-6z"/></svg></span>MobileMonkey</span></td>
+                <td class="product">Revenue financing</td>
+                <td class="amount num">$572,000</td>
+                <td class="when num">Apr 2026</td>
+              </tr>
+              <tr data-video="LnBA_jV3CBU">
+                <td class="company"><span class="co-cell"><span class="ledger-thumb"><svg viewBox="0 0 10 12"><path d="M0 0v12l10-6z"/></svg></span>Mangomint</span></td>
+                <td class="product">Line of credit</td>
+                <td class="amount num">$2,750,000</td>
+                <td class="when num">Apr 2026</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="ledger-foot">
+            <span><strong class="num">$16M</strong> committed in June 2026</span>
+            <a href="#" class="text-link">View funded companies</a>
+          </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Deployment ticker ───────────────────────────────── -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack">
+      <span class="ticker-item">Badger Maps <strong>$4,200,000</strong> Term loan</span>
+      <span class="ticker-item">CyberSmart <strong>$1,452,000</strong> Revenue financing</span>
+      <span class="ticker-item">Mangomint <strong>$2,750,000</strong> Line of credit</span>
+      <span class="ticker-item">ContactMonkey <strong>$1,000,000</strong> Revenue financing</span>
+      <span class="ticker-item">MobileMonkey <strong>$572,000</strong> Revenue financing</span>
+      <span class="ticker-item">June 2026 <strong>$16,000,000</strong> committed</span>
+      <span class="ticker-item">Since 2021 <strong>$271,000,000</strong> deployed</span>
+      <span class="ticker-item">Avg deal size <strong>$600,000</strong></span>
+      <span class="ticker-item">Funded <strong>24–48h</strong> after connecting</span>
+      <span class="ticker-item">Equity taken <strong>0%</strong> ever</span>
+    </div>
+  </div>
+
+  <!-- ─── Film ────────────────────────────────────────────── -->
+  <section class="film">
+    <div class="wrap">
+      <div class="film-head reveal">
+        <p class="eyebrow">The film</p>
+        <h2 class="display">Ownership is the whole point.</h2>
+        <p class="lede">Forty-two seconds on why 731 founders took capital without giving up a single share.</p>
+      </div>
+      <div class="film-stage brand-canvas reveal" style="--d:0.1s">
+        <div class="film-frame">
+          <video id="filmVideo" src="assets/video/founderpath-film.mp4" poster="assets/video/founderpath-poster.jpg" preload="metadata" playsinline></video>
+          <button class="film-cover" id="filmCover" data-youtube="">
+            <span class="film-play"><svg viewBox="0 0 14 16"><path d="M0 0v16l14-8z"/></svg></span>
+            <span class="film-cap">Watch the film — 42 sec</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Logos ───────────────────────────────────────────── -->
+  <section class="logos">
+    <div class="wrap">
+      <div class="logos-head reveal">
+        <p>Trusted by leading SaaS founders</p>
+        <a href="#" class="btn btn-ghost btn-sm">Read founder stories</a>
+      </div>
+      <div class="logos-grid reveal" style="--d:0.05s">
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/badger-maps.png" alt="Badger Maps" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-1" style="display:none">Badger Maps</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/kissflow.svg" alt="Kissflow" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-2" style="display:none">Kissflow</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/reply.svg" alt="Reply.io" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-4" style="display:none">Reply.io</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/contact-monkey.svg" alt="ContactMonkey" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-5" style="display:none">ContactMonkey</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/mobile-monkey.webp" alt="MobileMonkey" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-4" style="display:none">MobileMonkey</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/cyber-smart.webp" alt="CyberSmart" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-1" style="display:none">CyberSmart</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/smarteeva.svg" alt="SmartEeva" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-3" style="display:none">SmartEeva</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/exercise.svg" alt="Exercise.com" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-6" style="display:none">Exercise.com</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/bettercomp.png" alt="BetterComp" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-1" style="display:none">BetterComp</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/actionable.png" alt="Actionable" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-2" style="display:none">Actionable</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/kommunicate.png" alt="Kommunicate" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-3" style="display:none">Kommunicate</span></div>
+        <div class="logo-cell"><img class="logo-img" src="assets/images/logos/goreminders.png" alt="GoReminders" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" /><span class="logo-mark lm-6" style="display:none">GoReminders</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Products as term sheets ─────────────────────────── -->
+  <section class="products" style="border-top:none;">
+
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Products</span>
+        <span class="section-meta label-sm">Three structures. One principle: you keep ownership.</span>
+      </div>
+
+      <div class="product-row reveal">
+        <div>
+          <p class="product-idx num">01</p>
+          <h3 class="display">Revenue Financing</h3>
+          <p class="body-sm">For software companies with $1–3M in annual revenue. Offers are generated from your live billing data — no pitch deck, no diligence theater.</p>
+          <dl class="terms">
+            <div class="terms-row"><dt>Check size</dt><dd class="num">$10K – $10M <span class="note">— multiple of MRR</span></dd></div>
+            <div class="terms-row"><dt>Revenue requirement</dt><dd class="num">$500K+ trailing twelve months</dd></div>
+            <div class="terms-row"><dt>Repayment</dt><dd>Flat percentage of monthly revenue</dd></div>
+            <div class="terms-row"><dt>Dilution</dt><dd>None. No equity, no warrants, no board seats</dd></div>
+            <div class="terms-row"><dt>Time to funding</dt><dd class="num">24–72 hours after signing</dd></div>
+          </dl>
+          <a href="#" class="text-link">Revenue Financing terms &rarr;</a>
+        </div>
+        <div class="pv brand-canvas">
+          <div class="pv-card">
+            <div class="pv-card-head">
+              <span class="pv-card-title">Instant capital offer</span>
+              <span class="pv-chip">Live</span>
+            </div>
+            <div class="pv-card-body">
+              <div class="rf-stage" id="rfStage">
+                <div class="rf-phase rf-p1 active">
+                  <p class="rf-status">Analyzing revenue data</p>
+                  <div class="rf-check"><span class="rf-tick"><svg viewBox="0 0 10 10"><path d="M1.5 5.5L4 8L8.5 2.5"/></svg></span>Stripe connected — read-only</div>
+                  <div class="rf-check"><span class="rf-tick"><svg viewBox="0 0 10 10"><path d="M1.5 5.5L4 8L8.5 2.5"/></svg></span>MRR verified — <span class="num">&nbsp;$186,400</span></div>
+                  <div class="rf-check"><span class="rf-tick"><svg viewBox="0 0 10 10"><path d="M1.5 5.5L4 8L8.5 2.5"/></svg></span>Churn 2.1% — healthy retention</div>
+                </div>
+                <div class="rf-phase rf-p2">
+                  <p class="rf-status" style="animation:none">Instant capital offer</p>
+                  <p class="cap-amount num" id="rfAmount">$0</p>
+                  <div class="cap-bar"><div class="cap-fill"></div></div>
+                  <div class="cap-range num"><span>0</span><span>$2,000,000</span></div>
+                  <div class="cap-rows">
+                    <div class="cap-row"><span class="cap-dot" style="background:var(--line)"></span><span class="lbl">Total available</span><span class="val num">$2,000,000</span></div>
+                    <div class="cap-row strong"><span class="cap-dot" style="background:var(--pva)"></span><span class="lbl">Available today</span><span class="val num">$2,000,000</span></div>
+                  </div>
+                </div>
+                <div class="rf-phase rf-p3">
+                  <span class="rf-wired-tick"><svg viewBox="0 0 18 18"><path d="M3 9.5L7.5 14L15 4.5"/></svg></span>
+                  <p class="t">Funds wired.</p>
+                  <p class="s">24 hours after signature — equity untouched.</p>
+                  <div class="amt"><span>Wired to founder</span><strong class="num">$1,000,000</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-row reveal">
+        <div>
+          <p class="product-idx num">02</p>
+          <h3 class="display">Term Loans</h3>
+          <p class="body-sm">For mature software companies with $3M+ in annual revenue looking for interest-only periods and longer paybacks.</p>
+          <dl class="terms">
+            <div class="terms-row"><dt>Check size</dt><dd class="num">Up to $10M</dd></div>
+            <div class="terms-row"><dt>Revenue requirement</dt><dd class="num">$3M+ annual recurring revenue</dd></div>
+            <div class="terms-row"><dt>Structure</dt><dd>Interest-only periods, 4-year paybacks, no warrants</dd></div>
+            <div class="terms-row"><dt>Process</dt><dd class="num">Indicative terms in 2 days, close in 4–6 weeks</dd></div>
+            <div class="terms-row"><dt>Security</dt><dd>Company revenue only — no personal guarantees</dd></div>
+          </dl>
+          <a href="#" class="text-link">Term Loan terms &rarr;</a>
+        </div>
+        <div class="pv brand-canvas bc-teal">
+          <div class="pv-card">
+            <div class="pv-card-head">
+              <span class="pv-card-title">Closing timeline</span>
+              <span class="pv-card-title num" style="letter-spacing:0.04em;">4–6 weeks</span>
+            </div>
+            <div class="pv-card-body">
+              <div class="tl-rows">
+                <div class="tl-row">
+                  <span class="tl-name">Discuss terms</span>
+                  <div class="tl-track"><div class="tl-bar" style="left:0%;width:8%"></div></div>
+                  <span class="tl-dur num">2d</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-name">Term sheet</span>
+                  <div class="tl-track"><div class="tl-bar soft" style="left:8%;width:20%"></div></div>
+                  <span class="tl-dur num">1 wk</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-name">Credit review</span>
+                  <div class="tl-track"><div class="tl-bar" style="left:28%;width:13%"></div></div>
+                  <span class="tl-dur num">4d</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-name">Credit security agreement</span>
+                  <div class="tl-track"><div class="tl-bar soft" style="left:41%;width:48%"></div></div>
+                  <span class="tl-dur num">2–3 wks</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-name">Close and wire</span>
+                  <div class="tl-track"><div class="tl-bar" style="left:89%;width:11%"></div></div>
+                  <span class="tl-dur num">2d</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-row reveal">
+        <div>
+          <p class="product-idx num">03</p>
+          <h3 class="display">Merchant Cash Advance</h3>
+          <p class="body-sm">For companies with seasonal cash flows who want repayment to flex with future monthly sales.</p>
+          <dl class="terms">
+            <div class="terms-row"><dt>Best for</dt><dd>Seasonal or variable revenue businesses</dd></div>
+            <div class="terms-row"><dt>Repayment</dt><dd>Percentage of future monthly sales — dips when revenue dips</dd></div>
+            <div class="terms-row"><dt>Minimums</dt><dd>No fixed monthly minimums</dd></div>
+            <div class="terms-row"><dt>Early repayment</dt><dd>Permitted at any time, no penalty</dd></div>
+            <div class="terms-row"><dt>Time to funding</dt><dd class="num">24–72 hours after signing</dd></div>
+          </dl>
+          <a href="#" class="text-link">Merchant Cash Advance terms &rarr;</a>
+        </div>
+        <div class="pv brand-canvas bc-yellow">
+          <div class="pv-card">
+            <div class="pv-card-head">
+              <span class="pv-card-title">Repayment follows revenue</span>
+              <span class="pv-card-title num" style="letter-spacing:0.04em;">Monthly</span>
+            </div>
+            <div class="pv-card-body">
+              <div class="mca-legend">
+                <span><i style="background:var(--pva-deep)"></i>New</span>
+                <span><i style="background:var(--pva)"></i>Existing</span>
+                <span><i style="background:var(--pva-faint)"></i>Renewed</span>
+              </div>
+              <div class="mca-chart">
+                <div class="mca-group">
+                  <div class="mca-seg" style="height:14%;background:var(--pva-deep)"></div>
+                  <div class="mca-seg" style="height:26%;background:var(--pva)"></div>
+                  <div class="mca-seg" style="height:18%;background:var(--pva-faint)"></div>
+                </div>
+                <div class="mca-group">
+                  <div class="mca-seg" style="height:12%;background:var(--pva-deep)"></div>
+                  <div class="mca-seg" style="height:23%;background:var(--pva)"></div>
+                  <div class="mca-seg" style="height:16%;background:var(--pva-faint)"></div>
+                </div>
+                <div class="mca-group">
+                  <div class="mca-seg" style="height:13%;background:var(--pva-deep)"></div>
+                  <div class="mca-seg" style="height:25%;background:var(--pva)"></div>
+                  <div class="mca-seg" style="height:17%;background:var(--pva-faint)"></div>
+                </div>
+                <div class="mca-group">
+                  <div class="mca-seg" style="height:16%;background:var(--pva-deep)"></div>
+                  <div class="mca-seg" style="height:28%;background:var(--pva)"></div>
+                  <div class="mca-seg" style="height:19%;background:var(--pva-faint)"></div>
+                </div>
+                <div class="mca-group">
+                  <div class="mca-seg" style="height:18%;background:var(--pva-deep)"></div>
+                  <div class="mca-seg" style="height:31%;background:var(--pva)"></div>
+                  <div class="mca-seg" style="height:21%;background:var(--pva-faint)"></div>
+                </div>
+              </div>
+              <div class="mca-labels num">
+                <span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── Process ─────────────────────────────────────────── -->
+  <section class="process">
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom: 56px;">
+        <p class="eyebrow" style="margin-bottom: 24px;">How it works</p>
+        <h2 class="display">Five minutes of yours.<br />Twenty-four hours of ours.</h2>
+      </div>
+
+      <div class="tlx-panel reveal" style="--d:0.1s">
+        <div class="tlx-body">
+          <div class="tlx-axis">
+            <div class="tlx-grp g1">You</div>
+            <div class="tlx-grp g2">Founderpath</div>
+            <div class="tlx-track"></div>
+            <div class="tlx-tick" style="left:0%"></div>
+            <div class="tlx-tick" style="left:25%"></div>
+            <div class="tlx-tick" style="left:50%"></div>
+            <div class="tlx-tick" style="left:75%"></div>
+            <span class="tlx-hour num" style="left:0%; transform:none;">0h</span>
+            <span class="tlx-hour num" style="left:25%">6h</span>
+            <span class="tlx-hour num" style="left:50%">12h</span>
+            <span class="tlx-hour num" style="left:75%">18h</span>
+            <div class="tlx-seg s1"></div>
+            <div class="tlx-seg s2"></div>
+            <div class="tlx-span"></div>
+            <div class="tlx-wire"><svg viewBox="0 0 18 18"><path d="M3 9.5L7.5 14L15 4.5"/></svg></div>
+            <div class="tlx-playhead"></div>
+          </div>
+        </div>
+        <div class="tlx-captions">
+          <div class="tlx-cap">
+            <h3 class="display">Connect your data</h3>
+            <p class="body-sm">Read-only connections to Stripe, QuickBooks, or your bank. Underwriting runs on your actual revenue.</p>
+          </div>
+          <div class="tlx-cap">
+            <h3 class="display">Review your terms</h3>
+            <p class="body-sm">Amount, cost, repayment schedule — every number disclosed up front. No surprises.</p>
+          </div>
+          <div class="tlx-cap">
+            <h3 class="display">Funds land</h3>
+            <p class="body-sm">Capital arrives in your account within 24–48 hours of signing. Equity untouched.</p>
+          </div>
+        </div>
+      </div>
+      <div class="process-integrations reveal">
+        <span class="label-sm">Supported data sources</span>
+        <span class="int-name">Stripe</span>
+        <span class="int-name">QuickBooks</span>
+        <span class="int-name">Chargebee</span>
+        <span class="int-name">Recurly</span>
+        <span class="int-name">BILL</span>
+        <span class="int-name">ProfitWell</span>
+        <span class="int-name">PayPal</span>
+        <span class="int-name">Maxio</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Stats ───────────────────────────────────────────── -->
+  <section class="stats">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Track record</span>
+        <span class="section-meta label-sm num">As of June 2026</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stats-cell reveal">
+          <p class="stat-big num" data-count="16" data-prefix="$" data-suffix="M">$16M</p>
+          <p class="stat-lbl">New capital committed in June 2026</p>
+        </div>
+        <div class="stats-cell reveal" style="--d:0.05s">
+          <p class="stat-big num" data-count="731">731</p>
+          <p class="stat-lbl">Software companies funded since 2021</p>
+        </div>
+        <div class="stats-cell reveal" style="--d:0.1s">
+          <p class="stat-big num" data-count="271" data-prefix="$" data-suffix="M">$271M</p>
+          <p class="stat-lbl">Deployed to founders, zero equity taken</p>
+        </div>
+        <div class="stats-cell reveal" style="--d:0.15s">
+          <p class="stat-big num" data-count="4.9" data-decimals="1">4.9</p>
+          <p class="stat-lbl">Out of 5 on Trustpilot across 100+ verified reviews</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Portfolio voices ────────────────────────────────── -->
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Funded founders</span>
+        <span class="section-meta label-sm">Why CEOs chose non-dilutive capital</span>
+      </div>
+      <div class="voices-viewport reveal">
+        <div class="voices-track" id="voicesTrack">
+          <a class="voice-card" href="https://www.trustpilot.com/review/founderpath.com" target="_blank" rel="noopener">
+            <div class="voice-head">
+              <p class="voice-co">Badger Maps</p>
+              <svg class="voice-stars" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-label="5 out of 5 stars"><g transform="translate(0,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(23,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(46,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(69,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(92,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g></svg>
+            </div>
+            <p class="voice-quote">"Same capital we were offered by VCs — without the dilution, the board seats, or the six-month process."</p>
+            <div class="voice-meta">
+              <div class="voice-person">
+                <p class="name">Steve Benson</p>
+                <p class="role">Chief Executive Officer</p>
+              </div>
+              <p class="voice-amt num"><strong>$4,200,000</strong> <span>funded</span></p>
+            </div>
+          </a>
+          <a class="voice-card" href="https://www.trustpilot.com/review/founderpath.com" target="_blank" rel="noopener">
+            <div class="voice-head">
+              <p class="voice-co">ContactMonkey</p>
+              <svg class="voice-stars" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-label="5 out of 5 stars"><g transform="translate(0,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(23,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(46,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(69,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(92,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g></svg>
+            </div>
+            <p class="voice-quote">"Founderpath underwrote us on our actual revenue performance. The terms were clear, and the capital arrived in days."</p>
+            <div class="voice-meta">
+              <div class="voice-person">
+                <p class="name">Scott Pielsticker</p>
+                <p class="role">Chief Executive Officer</p>
+              </div>
+              <p class="voice-amt num"><strong>$1,000,000</strong> <span>funded</span></p>
+            </div>
+          </a>
+          <a class="voice-card" href="https://www.trustpilot.com/review/founderpath.com" target="_blank" rel="noopener">
+            <div class="voice-head">
+              <p class="voice-co">MobileMonkey</p>
+              <svg class="voice-stars" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-label="5 out of 5 stars"><g transform="translate(0,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(23,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(46,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(69,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(92,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g></svg>
+            </div>
+            <p class="voice-quote">"We kept full ownership and used the capital to fund growth on our own terms. We'd do it again."</p>
+            <div class="voice-meta">
+              <div class="voice-person">
+                <p class="name">Larry Kim</p>
+                <p class="role">Chief Executive Officer</p>
+              </div>
+              <p class="voice-amt num"><strong>$572,000</strong> <span>funded</span></p>
+            </div>
+          </a>
+          <a class="voice-card" href="https://www.trustpilot.com/review/founderpath.com" target="_blank" rel="noopener">
+            <div class="voice-head">
+              <p class="voice-co">CyberSmart</p>
+              <svg class="voice-stars" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-label="5 out of 5 stars"><g transform="translate(0,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(23,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(46,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(69,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(92,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g></svg>
+            </div>
+            <p class="voice-quote">"Founderpath became our exclusive non-dilutive capital partner. The diligence was data-driven and fast."</p>
+            <div class="voice-meta">
+              <div class="voice-person">
+                <p class="name">Jamie Akhtar</p>
+                <p class="role">Chief Executive Officer</p>
+              </div>
+              <p class="voice-amt num"><strong>$1,452,000</strong> <span>funded</span></p>
+            </div>
+          </a>
+          <a class="voice-card" href="https://www.trustpilot.com/review/founderpath.com" target="_blank" rel="noopener">
+            <div class="voice-head">
+              <p class="voice-co">Lingco</p>
+              <svg class="voice-stars" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-label="5 out of 5 stars"><g transform="translate(0,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(23,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(46,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(69,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(92,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g></svg>
+            </div>
+            <p class="voice-quote">"They bring the VC mentality without the equity. The most founder-friendly terms we found — and they move quickly."</p>
+            <div class="voice-meta">
+              <div class="voice-person">
+                <p class="name">Seth Killian</p>
+                <p class="role">Founder</p>
+              </div>
+              <p class="voice-amt num"><strong>$850,000</strong> <span>funded</span></p>
+            </div>
+          </a>
+          <a class="voice-card" href="https://www.trustpilot.com/review/founderpath.com" target="_blank" rel="noopener">
+            <div class="voice-head">
+              <p class="voice-co">SupplyHive</p>
+              <svg class="voice-stars" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-label="5 out of 5 stars"><g transform="translate(0,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(23,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(46,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(69,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(92,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g></svg>
+            </div>
+            <p class="voice-quote">"A seamless experience from start to finish. Responsive, knowledgeable, diligent — we closed in less than a week."</p>
+            <div class="voice-meta">
+              <div class="voice-person">
+                <p class="name">Vishy Visweswaran</p>
+                <p class="role">Founder</p>
+              </div>
+              <p class="voice-amt num"><strong>$1,200,000</strong> <span>funded</span></p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="voices-foot reveal">
+        <p class="rating">
+          <svg class="voice-stars" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-label="5 out of 5 stars"><g transform="translate(0,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(23,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(46,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(69,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g><g transform="translate(92,0)"><rect width="20" height="20"/><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></g></svg>
+          <strong class="num">4.9 / 5</strong> on Trustpilot — — <a href="https://www.trustpilot.com/review/founderpath.com" target="_blank" rel="noopener" class="text-link">100+ verified reviews</a>
+        </p>
+        <div class="carousel-arrows">
+          <button class="carousel-arrow" id="voicesPrev" aria-label="Previous founders">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="carousel-arrow" id="voicesNext" aria-label="More founders">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Eligibility ─────────────────────────────────────── -->
+  <section class="eligibility">
+    <div class="wrap">
+      <div class="elig-grid">
+        <div class="reveal">
+          <p class="eyebrow" style="margin-bottom:24px;">Eligibility</p>
+          <h2 class="display">Find the right structure for your company.</h2>
+          <p class="lede">Three questions. A recommendation based on your revenue profile — not a sales pitch.</p>
+        </div>
+        <div class="quiz reveal" style="--d:0.1s">
+          <div class="quiz-progress">
+            <div class="quiz-seg active" id="qSeg1">01 — Revenue</div>
+            <div class="quiz-seg" id="qSeg2">02 — Use of funds</div>
+            <div class="quiz-seg" id="qSeg3">03 — Timeline</div>
+          </div>
+          <div class="quiz-body">
+            <div class="quiz-step" id="qStep1">
+              <p class="quiz-q">What is your annual recurring revenue?</p>
+              <div class="quiz-options">
+                <button class="quiz-option" data-step="1" data-val="pre">Pre-revenue</button>
+                <button class="quiz-option num" data-step="1" data-val="0-1m">$0 – $1M</button>
+                <button class="quiz-option num" data-step="1" data-val="1-5m">$1M – $5M</button>
+                <button class="quiz-option num" data-step="1" data-val="5-10m">$5M – $10M</button>
+                <button class="quiz-option num" data-step="1" data-val="10m+">$10M+</button>
+              </div>
+            </div>
+            <div class="quiz-step" id="qStep2" style="display:none">
+              <p class="quiz-q">What will the capital fund?</p>
+              <div class="quiz-options">
+                <button class="quiz-option" data-step="2" data-val="growth">Sales &amp; marketing</button>
+                <button class="quiz-option" data-step="2" data-val="hiring">Hiring &amp; team expansion</button>
+                <button class="quiz-option" data-step="2" data-val="product">Product development</button>
+                <button class="quiz-option" data-step="2" data-val="cashflow">Cash flow &amp; runway</button>
+              </div>
+            </div>
+            <div class="quiz-step" id="qStep3" style="display:none">
+              <p class="quiz-q">When do you need the capital?</p>
+              <div class="quiz-options">
+                <button class="quiz-option num" data-step="3" data-val="now">Within 24–72 hours</button>
+                <button class="quiz-option" data-step="3" data-val="week">Within a week</button>
+                <button class="quiz-option" data-step="3" data-val="month">Within a month</button>
+                <button class="quiz-option" data-step="3" data-val="flexible">Flexible</button>
+              </div>
+            </div>
+            <div class="quiz-result" id="qResult" style="display:none">
+              <p class="quiz-result-label">Recommended structure</p>
+              <p class="quiz-result-product" id="qResultProduct">Revenue Financing</p>
+              <p class="quiz-result-desc" id="qResultDesc">Capital based on your MRR — no equity, no board seats. Offers from $10K to $10M.</p>
+              <div class="quiz-result-actions">
+                <a href="#" class="btn btn-inverse">Get my terms</a>
+                <button class="btn btn-ghost-inverse quiz-restart">Start over</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Reviews ─────────────────────────────────────────── -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Verified reviews</span>
+        <span class="section-meta label-sm">Trusted by SaaS founders since 2021</span>
+      </div>
+      <div class="reviews-list reveal">
+        <div class="review-row">
+          <p class="review-date num">Feb 2026</p>
+          <div>
+            <p class="review-title">"Founderpath understands startups"</p>
+            <p class="review-author">Seth Killian — Lingco Language Labs</p>
+          </div>
+          <p class="review-body">They bring the VC mentality without the equity. Their terms are the most founder-friendly we found, and they move quickly.</p>
+          <a href="#" class="review-verify">Verify ↗</a>
+        </div>
+        <div class="review-row">
+          <p class="review-date num">Jul 2025</p>
+          <div>
+            <p class="review-title">"Professional team, highly recommend"</p>
+            <p class="review-author">Vishy Visweswaran — SupplyHive</p>
+          </div>
+          <p class="review-body">A seamless experience from start to finish. Responsive, knowledgeable, and diligent — we closed in less than a week.</p>
+          <a href="#" class="review-verify">Verify ↗</a>
+        </div>
+        <div class="review-row">
+          <p class="review-date num">May 2024</p>
+          <div>
+            <p class="review-title">"They move very quickly"</p>
+            <p class="review-author">Rachel Kuhr Conn — Productable</p>
+          </div>
+          <p class="review-body">We have a unique business model and they took the time to understand it and get behind us. The slowest part of getting money was me.</p>
+          <a href="#" class="review-verify">Verify ↗</a>
+        </div>
+        <div class="review-row">
+          <p class="review-date num">Nov 2023</p>
+          <div>
+            <p class="review-title">"The best alternative to VC we found"</p>
+            <p class="review-author">Priya Anand — Cacheflow</p>
+          </div>
+          <p class="review-body">After term sheets with painful dilution, this was a revelation: same capital, zero equity given up. The whole process took under a week.</p>
+          <a href="#" class="review-verify">Verify ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Security ────────────────────────────────────────── -->
+  <section class="security">
+    <div class="wrap">
+      <div class="section-head reveal" style="border-bottom-color: var(--line-strong);">
+        <span class="eyebrow">Security</span>
+        <span class="section-meta label-sm">Secure by design</span>
+      </div>
+      <div class="sec-grid">
+        <div class="sec-cell reveal">
+          <h3>SOC 2 Type II</h3>
+          <p class="body-sm">Independently audited controls over security, availability, and confidentiality — renewed annually.</p>
+          <a href="https://trust.founderpath.com" target="_blank" rel="noopener" class="text-link">Trust center ↗</a>
+          <img src="assets/images/badge-soc2.svg" alt="" class="sec-badge" />
+        </div>
+        <div class="sec-cell reveal" style="--d:0.05s">
+          <h3>GDPR compliant</h3>
+          <p class="body-sm">EU data rights honored end to end, with a registered representative for European founders.</p>
+          <a href="https://prighter.com/q/18604028289" target="_blank" rel="noopener" class="text-link">Verify status ↗</a>
+          <img src="assets/images/badge-gdpr.svg" alt="" class="sec-badge" />
+        </div>
+        <div class="sec-cell reveal" style="--d:0.1s">
+          <h3>Bank-level encryption</h3>
+          <p class="body-sm">TLS in transit, AES-256 at rest. Your data underwrites your offer — it is never sold or shared.</p>
+        </div>
+        <div class="sec-cell reveal" style="--d:0.15s">
+          <h3>Read-only connections</h3>
+          <p class="body-sm">We see your metrics, never your money. No write access to Stripe, your bank, or your books.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Network ─────────────────────────────────────────── -->
+  <section class="network">
+    <div class="wrap">
+      <div class="network-grid">
+        <div class="reveal">
+          <p class="eyebrow" style="margin-bottom:24px;">The network</p>
+          <h2 class="display">A community, not a portfolio.</h2>
+          <p class="lede">Get funded and you join 731 founders. Quarterly CEO retreats, invite-only dinners, and a private network where operators trade playbooks on hiring, pricing, and cash flow.</p>
+          <a href="#" class="btn btn-ghost">See if you qualify</a>
+        </div>
+        <div class="network-items reveal" style="--d:0.1s">
+          <div class="network-item">
+            <div>
+              <h3 class="display">Next retreat: Auberge Resort, Napa Valley</h3>
+              <p class="body-sm">September 2026. Three days with member CEOs — invite-only, application required.</p>
+            </div>
+            <a href="#" class="text-link">Apply &rarr;</a>
+          </div>
+          <div class="network-item">
+            <div>
+              <h3 class="display">Mentoring from public-company CEOs</h3>
+              <p class="body-sm">Henry Schuck (ZoomInfo) on scaling from $5M to $500M in revenue — recorded sessions for member CEOs.</p>
+            </div>
+            <a href="#" class="text-link">Watch &rarr;</a>
+          </div>
+          <div class="network-item">
+            <div>
+              <h3 class="display">Invite-only founder dinners</h3>
+              <p class="body-sm">One-on-one time with operators like Kim Lecha (Typeform), Godard Abel (G2), and Greg Galant (Muck Rack).</p>
+            </div>
+            <a href="#" class="text-link">See inside &rarr;</a>
+          </div>
+          <div class="network-item">
+            <div>
+              <h3 class="display">Annual founder conference</h3>
+              <p class="body-sm">Member CEOs gather each year in San Francisco to discuss tactics, share war stories, and work through problems.</p>
+            </div>
+            <a href="#" class="text-link">Past events &rarr;</a>
+          </div>
+          <div class="network-item">
+            <div>
+              <h3 class="display">435 free courses from operators</h3>
+              <p class="body-sm">Pricing strategy, CAC optimization, churn reduction, and fundraising alternatives — taught by founders who scaled past $10M ARR.</p>
+            </div>
+            <a href="#" class="text-link">Get access &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="network-photos reveal" style="--d:0.15s">
+        <figure class="network-photo">
+          <img src="assets/images/community-panel.jpg" alt="Founderpath CEO panel on stage" loading="lazy" />
+          <figcaption>CEO mentoring sessions</figcaption>
+        </figure>
+        <figure class="network-photo">
+          <img src="assets/images/community-dublin.jpg" alt="Founder dinner at the Guinness Storehouse, Dublin" loading="lazy" />
+          <figcaption>Dublin founder dinner</figcaption>
+        </figure>
+        <figure class="network-photo">
+          <img src="assets/images/community-conference.jpg" alt="Annual founder conference in San Francisco" loading="lazy" />
+          <figcaption>SF founder conference</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ─────────────────────────────────────────────── -->
+  <section>
+    <div class="wrap">
+      <div class="faq-grid">
+        <div class="reveal">
+          <p class="eyebrow" style="margin-bottom:24px;">FAQ</p>
+          <h2 class="display">Common questions.</h2>
+        </div>
+        <div class="faq-list reveal" style="--d:0.1s">
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>What is Founderpath and how does it work?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Connect your billing tools — Stripe, Chargebee, or QuickBooks — and receive an offer based on your MRR. Accept, sign, and capital lands in your account in 24–72 hours. You repay as a flat percentage of monthly revenue, so payments flex with your business.</div></div>
+          </div>
+
+          <div class="faq-row open" data-faq>
+            <button class="faq-q" aria-expanded="true"><span>Who qualifies for funding?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">B2B SaaS companies with at least $500K in trailing-twelve-month revenue, healthy retention, and recurring contracts. We also fund e-commerce brands above $500K in annual sales and agencies above $1M in revenue.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>How is this different from venture capital or a bank loan?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">No equity, no board seats, no personal guarantees. Unlike VC, you keep full ownership. Unlike a bank, approval is based on live revenue data rather than credit history or collateral — a real offer in minutes, not months.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>How fast can I get capital after applying?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Most founders receive an offer within minutes of connecting their tools. Once signed, funds land in your bank account within 24–72 hours.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>Do I give up equity or board seats?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Never. Founderpath is 100% non-dilutive. You keep full ownership, and no board seats or observers are ever required.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>How is my company evaluated?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">We analyze your MRR, churn, growth trajectory, and retention using live data from your billing tools. No manual underwriting, no pitch decks — your actual revenue performance.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>What check sizes are available?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Offers range from $10,000 to $10,000,000, calculated as a multiple of your MRR so the amount scales with your business. The average deal size is about $600,000.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>What is the typical cost of capital?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Revenue Financing offers discount rates on future revenues as low as 7%. Term Loans carry interest rates as low as 15%. Merchant Cash Advances repay at rates as low as 5% of monthly revenue. All offers are contingent on underwriting — and every number is disclosed before you sign.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>Are personal guarantees, liens, or warrants required?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">No personal guarantees, no liens on personal assets, and no warrants. Your company's recurring revenue is the only security needed.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>What if growth slows after I take capital?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Repayments are tied to a percentage of monthly revenue. If revenue dips, your payment dips proportionally — there are no fixed minimums that could strain runway.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>Is my financial data safe?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Yes. We use read-only API connections and bank-grade encryption. Founderpath is SOC 2 Type II certified and GDPR compliant. Your data is never sold or shared.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>Can I repay early without penalty?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Yes — early repayment is always available at no extra cost. Many founders pay down in strong revenue months and redraw when they need capital again.</div></div>
+          </div>
+
+          <div class="faq-row" data-faq>
+            <button class="faq-q" aria-expanded="false"><span>Do you fund companies outside the US?</span><span class="faq-icon" aria-hidden="true"></span></button>
+            <div class="faq-a"><div class="faq-a-inner">Yes — Founderpath is available in most countries and has closed deals with founders in Canada, South America, Europe, and Asia.</div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Final CTA — brand finale ────────────────────────── -->
+  <section class="final brand-canvas">
+    <div class="wrap">
+      <div class="final-inner">
+        <h2 class="display reveal">Your revenue is the only pitch deck we need.</h2>
+        <p class="lede reveal" style="--d:0.1s">Connect your data and see your terms in minutes. No obligation, no dilution.</p>
+        <div class="final-actions reveal" style="--d:0.15s">
+          <a href="#" class="btn btn-inverse">Request capital <span class="arrow">&rarr;</span></a>
+          <a href="#" class="btn btn-ghost-inverse">Talk to our team</a>
+        </div>
+        <div class="final-figures reveal" style="--d:0.2s">
+          <span><strong>$271M</strong> deployed</span>
+          <span class="dot"></span>
+          <span><strong>731</strong> founders</span>
+          <span class="dot"></span>
+          <span><strong>0%</strong> equity taken</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ──────────────────────────────────────────── -->
+  <footer>
+    <div class="wrap">
+
+      <div class="footer-head">
+        <div class="footer-brand">
+          <p class="nav-logo"><img src="assets/images/founderpath-logo.svg" alt="Founderpath" /></p>
+          <p>Non-dilutive capital for software companies. $271M deployed to 731 founders since 2021 — zero equity taken.</p>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div>
+          <div class="footer-group">
+            <p class="footer-col-title">Products</p>
+            <a href="https://founderpath.com/products/revenue-financing" class="footer-link">Revenue Financing</a>
+            <a href="https://founderpath.com/products/term-loans" class="footer-link">Term Loans</a>
+            <a href="https://founderpath.com/products/line-of-credit" class="footer-link">Line of Credit<span class="new">New</span></a>
+            <a href="https://founderpath.com/products/merchant-cash-advance" class="footer-link">Merchant Cash Advance</a>
+          </div>
+          <div class="footer-group">
+            <p class="footer-col-title">Industries</p>
+            <a href="https://founderpath.com/industry/software" class="footer-link">Software</a>
+            <a href="https://founderpath.com/industry/brick-and-mortar" class="footer-link">Brick &amp; Mortar</a>
+            <a href="https://founderpath.com/industry/cpg" class="footer-link">CPG Brands</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-group">
+            <p class="footer-col-title">Resources</p>
+            <a href="https://founderpath.com/software-private-credit" class="footer-link">Private Credit Report</a>
+            <a href="https://founderpath.com/growth-playbooks" class="footer-link">Growth Playbooks</a>
+            <a href="https://founderpath.com/saas-financing" class="footer-link">SaaS Financing Options</a>
+            <a href="https://founderpath.com/resources" class="footer-link">Free Courses</a>
+            <a href="https://founderpath.com/blog" class="footer-link">Blog</a>
+            <a href="https://founderpath.com/glossary" class="footer-link">Glossary</a>
+            <a href="https://founderpath.com/integrations" class="footer-link">Integrations</a>
+            <a href="https://founderpath.com/blog/category/case-study" class="footer-link">Case Studies</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-group">
+            <p class="footer-col-title">Free Tools</p>
+            <a href="https://founderpath.com/bank-statement-converter" class="footer-link">Bank Statement Converter</a>
+            <a href="https://founderpath.com/salary-benchmarks" class="footer-link">Salary Benchmarks</a>
+            <a href="https://founderpath.com/free-tools" class="footer-link">All Free Tools &rarr;</a>
+          </div>
+          <div class="footer-group">
+            <p class="footer-col-title">Events</p>
+            <a href="https://luma.com/meetsaas" class="footer-link">Upcoming Events</a>
+            <a href="https://founderpath.com/events/saas" class="footer-link">SaaS Events</a>
+            <a href="https://luma.com/sr26" class="footer-link">Napa Valley CA 2026</a>
+            <a href="https://founderpath.com/events/webinar" class="footer-link">Live Webinar</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-group">
+            <p class="footer-col-title">Company</p>
+            <a href="https://founderpath.com/blog/about-founderpath-history" class="footer-link">About Us</a>
+            <a href="https://founderpath.com/partners" class="footer-link">Partners</a>
+            <a href="#" class="footer-link">Referrals</a>
+            <a href="https://founderpath.com/blog/founderpath-reviews" class="footer-link">Reviews</a>
+            <a href="https://founderpath.com/media-kit" class="footer-link">Media Kit</a>
+            <a href="#" class="footer-link">One Pager</a>
+            <a href="https://feedback.founderpath.com/" class="footer-link">Feedback</a>
+            <a href="https://status.founderpath.com" class="footer-link">Status</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-group">
+            <p class="footer-col-title">Compare</p>
+            <a href="https://founderpath.com/compare/founderpath-vs-svb" class="footer-link">vs SVB</a>
+            <a href="https://founderpath.com/compare/founderpath-vs-lighter-capital" class="footer-link">vs Lighter Capital</a>
+            <a href="https://founderpath.com/compare/founderpath-vs-capchase" class="footer-link">vs Capchase</a>
+            <a href="https://founderpath.com/compare/founderpath-vs-saas-capital" class="footer-link">vs SaaS Capital</a>
+            <a href="https://founderpath.com/compare/founderpath-vs-clearco" class="footer-link">vs Clearco</a>
+            <a href="https://founderpath.com/compare" class="footer-link">All comparisons &rarr;</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-group">
+            <p class="footer-col-title">Legal</p>
+            <a href="https://founderpath.com/privacy" class="footer-link">Privacy Policy</a>
+            <a href="https://founderpath.com/terms" class="footer-link">Terms of Service</a>
+            <a href="https://trust.founderpath.com" class="footer-link">Security Center</a>
+            <a href="https://founderpath.com/bug-bounty" class="footer-link">Bug Bounty</a>
+          </div>
+          <div class="footer-group">
+            <p class="footer-col-title">Compliance</p>
+            <div class="footer-badges">
+              <a href="https://trust.founderpath.com" target="_blank" rel="noopener"><img src="assets/images/badge-soc2.svg" alt="SOC 2 Type II Compliant" class="badge-img" /></a>
+              <a href="https://prighter.com/q/18604028289" target="_blank" rel="noopener"><img src="assets/images/badge-gdpr.svg" alt="GDPR Compliant" class="badge-img" /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Founderpath, Inc. All rights reserved.</span>
+        <div class="footer-ai">
+          <span>AI summary:</span>
+          <a href="https://chatgpt.com/?q=Summarize%20Founderpath.com" target="_blank" rel="noopener">ChatGPT</a><span class="sep">&middot;</span>
+          <a href="https://claude.ai/new?q=Summarize%20Founderpath.com" target="_blank" rel="noopener">Claude</a><span class="sep">&middot;</span>
+          <a href="https://www.google.com/search?udm=50&q=Summarize%20Founderpath.com" target="_blank" rel="noopener">Gemini</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── Video modal ─────────────────────────────────────── -->
+  <div class="video-overlay" id="videoOverlay">
+    <div class="video-frame">
+      <button class="video-close" id="videoClose" aria-label="Close video">&times;</button>
+      <iframe id="videoIframe" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Founder interview"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Scroll reveal — single, subtle effect
+    (function() {
+      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var els = document.querySelectorAll('.reveal');
+      if (prefersReduced || !('IntersectionObserver' in window)) {
+        els.forEach(function(el){ el.classList.add('in'); });
+        return;
+      }
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+      els.forEach(function(el){ obs.observe(el); });
+    })();
+
+    // Count-up numbers on scroll into view
+    (function() {
+      var els = document.querySelectorAll('[data-count]');
+      if (!els.length) return;
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced || !('IntersectionObserver' in window)) return; // HTML already holds final values
+      function run(el) {
+        var target = parseFloat(el.dataset.count);
+        var dec = parseInt(el.dataset.decimals || '0', 10);
+        var pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+        var dur = 1100, t0 = null;
+        function tick(now) {
+          if (!t0) t0 = now;
+          var p = Math.min(1, (now - t0) / dur);
+          var e = 1 - Math.pow(1 - p, 3);
+          el.textContent = pre + (target * e).toFixed(dec) + suf;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { run(e.target); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.5 });
+      els.forEach(function(el) { obs.observe(el); });
+    })();
+
+    // Revenue Financing widget — looping state machine
+    (function() {
+      var stage = document.getElementById('rfStage');
+      if (!stage) return;
+      var phases = stage.querySelectorAll('.rf-phase');
+      var checks = stage.querySelectorAll('.rf-p1 .rf-check');
+      var amount = document.getElementById('rfAmount');
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var timers = [];
+      function setPhase(n) {
+        phases.forEach(function(p, i) { p.classList.toggle('active', i === n); });
+      }
+      function countAmount() {
+        var target = 1000000, dur = 900, t0 = null;
+        function tick(now) {
+          if (!t0) t0 = now;
+          var p = Math.min(1, (now - t0) / dur);
+          var e = 1 - Math.pow(1 - p, 3);
+          amount.textContent = '$' + Math.round(target * e).toLocaleString('en-US');
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+      function cycle() {
+        timers.forEach(clearTimeout); timers = [];
+        setPhase(0);
+        checks.forEach(function(c) { c.classList.remove('on'); });
+        checks.forEach(function(c, i) {
+          timers.push(setTimeout(function() { c.classList.add('on'); }, 350 + i * 550));
+        });
+        timers.push(setTimeout(function() { setPhase(1); countAmount(); }, 2500));
+        timers.push(setTimeout(function() { setPhase(2); }, 5600));
+        timers.push(setTimeout(cycle, 7800));
+      }
+      if (reduced) {
+        // Static final offer state, no loop
+        setPhase(1);
+        amount.textContent = '$1,000,000';
+        stage.querySelector('.cap-fill').style.width = '50%';
+        return;
+      }
+      var started = false;
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting && !started) { started = true; cycle(); obs.disconnect(); }
+        });
+      }, { threshold: 0.3 });
+      obs.observe(stage);
+    })();
+
+    // Deployment ticker — duplicate content for seamless loop
+    (function() {
+      var track = document.getElementById('tickerTrack');
+      if (track) track.innerHTML += track.innerHTML;
+    })();
+
+    // Film: local mp4, or YouTube modal fallback via data-youtube
+    (function() {
+      var cover = document.getElementById('filmCover');
+      var video = document.getElementById('filmVideo');
+      if (!cover || !video) return;
+      cover.addEventListener('click', function() {
+        var yt = cover.dataset.youtube;
+        if (yt) {
+          var overlay = document.getElementById('videoOverlay');
+          document.getElementById('videoIframe').src = 'https://www.youtube.com/embed/' + yt + '?autoplay=1&rel=0';
+          overlay.classList.add('open');
+          document.body.style.overflow = 'hidden';
+          return;
+        }
+        video.controls = true;
+        var p = video.play();
+        if (p && p.catch) p.catch(function() { video.controls = false; });
+        cover.classList.add('hidden');
+      });
+      video.addEventListener('ended', function() {
+        video.controls = false;
+        cover.classList.remove('hidden');
+      });
+      video.addEventListener('error', function() {
+        cover.querySelector('.film-cap').textContent = 'Add video at assets/video/founderpath-film.mp4';
+      });
+    })();
+
+    // Ledger rows → video modal
+    (function() {
+      var overlay = document.getElementById('videoOverlay');
+      var iframe = document.getElementById('videoIframe');
+      function open(id) {
+        iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        overlay.classList.remove('open');
+        iframe.src = '';
+        document.body.style.overflow = '';
+      }
+      document.querySelectorAll('.ledger tbody tr[data-video]').forEach(function(row) {
+        row.addEventListener('click', function() { open(this.dataset.video); });
+      });
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) close(); });
+      document.getElementById('videoClose').addEventListener('click', close);
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+    })();
+
+    // Voices carousel
+    (function() {
+      var track = document.getElementById('voicesTrack');
+      if (!track) return;
+      var prev = document.getElementById('voicesPrev');
+      var next = document.getElementById('voicesNext');
+      var idx = 0;
+      function perView() {
+        return window.innerWidth <= 1024 ? 1 : 3;
+      }
+      function maxIdx() {
+        return Math.max(0, track.children.length - perView());
+      }
+      function update() {
+        var step = 100 / perView();
+        track.style.transform = 'translateX(' + (-idx * step) + '%)';
+        prev.disabled = idx === 0;
+        next.disabled = idx >= maxIdx();
+      }
+      prev.addEventListener('click', function() { idx = Math.max(0, idx - 1); update(); });
+      next.addEventListener('click', function() { idx = Math.min(maxIdx(), idx + 1); update(); });
+      window.addEventListener('resize', function() { idx = Math.min(idx, maxIdx()); update(); });
+      update();
+    })();
+
+    // Eligibility quiz
+    (function() {
+      var answers = {};
+      var products = {
+        'pre':   ['Revenue Financing', 'Capital based on your MRR — no equity, no board seats. Offers from $10K to $10M.'],
+        '0-1m':  ['Revenue Financing', 'Built for growing SaaS companies. Capital based on your MRR, funded in 24–72 hours.'],
+        '1-5m':  ['Revenue Financing', 'For $1M–$5M ARR companies. Offers up to 3× MRR, repaid as a percentage of monthly revenue.'],
+        '5-10m': ['Term Loan', 'For mature software companies — larger amounts, longer terms, still no equity.'],
+        '10m+':  ['Term Loan', 'Structured term loans up to $10M for high-growth companies with $3M+ ARR.']
+      };
+      function setStep(n) {
+        document.getElementById('qStep1').style.display = n === 1 ? '' : 'none';
+        document.getElementById('qStep2').style.display = n === 2 ? '' : 'none';
+        document.getElementById('qStep3').style.display = n === 3 ? '' : 'none';
+        document.getElementById('qResult').style.display = n === 4 ? '' : 'none';
+        [1,2,3].forEach(function(i) {
+          var seg = document.getElementById('qSeg' + i);
+          if (seg) seg.classList.toggle('active', i <= (n === 4 ? 3 : n));
+        });
+      }
+      document.querySelectorAll('.quiz-option').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var s = +this.dataset.step;
+          answers[s] = this.dataset.val;
+          this.classList.add('selected');
+          setTimeout(function() {
+            if (s < 3) {
+              setStep(s + 1);
+            } else {
+              var p = products[answers[1]] || ['Revenue Financing', 'Non-dilutive capital for software founders.'];
+              document.getElementById('qResultProduct').textContent = p[0];
+              document.getElementById('qResultDesc').textContent = p[1];
+              setStep(4);
+            }
+          }, 250);
+        });
+      });
+      document.querySelector('.quiz-restart').addEventListener('click', function() {
+        answers = {};
+        document.querySelectorAll('.quiz-option').forEach(function(b){ b.classList.remove('selected'); });
+        setStep(1);
+      });
+    })();
+
+    // FAQ accordion
+    (function() {
+      document.querySelectorAll('[data-faq]').forEach(function(row) {
+        var btn = row.querySelector('.faq-q');
+        btn.addEventListener('click', function() {
+          var isOpen = row.classList.contains('open');
+          document.querySelectorAll('[data-faq].open').forEach(function(r) {
+            r.classList.remove('open');
+            r.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+          });
+          if (!isOpen) {
+            row.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
